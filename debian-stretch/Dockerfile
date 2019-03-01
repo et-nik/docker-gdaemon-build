@@ -19,7 +19,7 @@ RUN apt-get -y update && apt-get -y install \
         libcurl4-openssl-dev \
     --no-install-recommends && rm -r /var/lib/apt/lists/*
 
-RUN apt-get -y -t stretch-backports install \
+RUN apt-get -y update && apt-get -y -t stretch-backports install \
         libboost1.67-dev \
         libboost-system1.67-dev \
         libboost-filesystem1.67-dev \

@@ -23,4 +23,6 @@ RUN wget http://packages.gameap.ru/others/boost_1_65_1.tar.gz \
     && cd boost_1_65_1 \
     && ./bootstrap.sh --with-libraries=chrono,exception,filesystem,iostreams,serialization,system,thread \
     && ./b2 install --link=static -j $(grep -c ^processor /proc/cpuinfo) \
-    && cd .. && rm -r boost_1_65_1
+    && cd .. \
+    && rm -r boost_1_65_1 \
+    && rm boost_1_65_1.tar.gz
