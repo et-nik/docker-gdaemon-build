@@ -9,7 +9,6 @@ RUN curl -fsSL http://packages.gameap.ru/gameap-rep.gpg.key | apt-key add - \
     && echo "deb http://packages.gameap.ru/debian wheezy main" > /etc/apt/sources.list.d/gameap.list
 
 RUN apt-get -y update && apt-get -y install \
-        cmake \
         pkg-config \
         libbinn-dev \
         librestclientcpp-dev \
@@ -26,3 +25,9 @@ RUN wget http://packages.gameap.ru/others/boost_1_65_1.tar.gz \
     && cd .. \
     && rm -r boost_1_65_1 \
     && rm boost_1_65_1.tar.gz
+
+RUN wget https://cmake.org/files/v3.10/cmake-3.10.3-Linux-x86_64.tar.gz \
+    && tar -xvf cmake-3.10.3-Linux-x86_64.tar.gz \
+    && cp -R cmake-3.10.3-Linux-x86_64/* / \
+    && rm -r cmake-3.10.3-Linux-x86_64 \
+    && rm cmake-3.10.3-Linux-x86_64.tar.gz
