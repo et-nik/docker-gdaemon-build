@@ -45,7 +45,7 @@ RUN wget https://github.com/openssl/openssl/archive/OpenSSL_1_1_1a.tar.gz \
 RUN wget https://curl.haxx.se/download/curl-7.63.0.tar.gz  \
     && tar -xvf curl-7.63.0.tar.gz  \
     && cd curl-7.63.0  \
-    && cmake -DCMAKE_USE_OPENSSL=on .  \
+    && ./configure --with-ssl --disable-shared \
     && make -j$(grep -c ^processor /proc/cpuinfo)\
     && make install \
     && cd .. && rm -r curl-7.63.0 && rm curl-7.63.0.tar.gz
