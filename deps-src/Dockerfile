@@ -52,6 +52,7 @@ RUN wget https://curl.haxx.se/download/curl-7.63.0.tar.gz  \
 
 # Compile Rest Client Library
 RUN git clone https://github.com/mrtazz/restclient-cpp \
+    && git checkout tags/0.5.1 \
     && cd restclient-cpp \
     && ./autogen.sh \
     && ./configure \
@@ -61,6 +62,7 @@ RUN git clone https://github.com/mrtazz/restclient-cpp \
 
 # Compile Json Cpp
 RUN git clone https://github.com/open-source-parsers/jsoncpp \
+    && git checkout tags/1.8.4 \
     && cd jsoncpp \
     && cmake . \
     && make -j$(grep -c ^processor /proc/cpuinfo)\
