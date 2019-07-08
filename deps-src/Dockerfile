@@ -12,12 +12,12 @@ RUN wget https://cmake.org/files/v3.10/cmake-3.10.3-Linux-x86_64.tar.gz \
     && rm -r cmake-3.10.3-Linux-x86_64 && rm cmake-3.10.3-Linux-x86_64.tar.gz
 
 # Compile Boost
-RUN wget http://packages.gameap.ru/others/boost_1_65_1.tar.gz \
-    && tar -xvf boost_1_65_1.tar.gz \
-    && cd boost_1_65_1 \
+RUN wget http://packages.gameap.ru/others/boost_1_70_0.tar.gz \
+    && tar -xvf boost_1_70_0.tar.gz \
+    && cd boost_1_70_0 \
     && ./bootstrap.sh --with-libraries=chrono,exception,filesystem,iostreams,serialization,system,thread \
     && ./b2 install --link=static -j $(grep -c ^processor /proc/cpuinfo) \
-    && cd .. && rm -r boost_1_65_1 && rm boost_1_65_1.tar.gz
+    && cd .. && rm -r boost_1_70_0 && rm boost_1_70_0.tar.gz
 
 # Compile Binn
 RUN git clone https://github.com/liteserver/binn \
