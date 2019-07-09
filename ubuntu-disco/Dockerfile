@@ -17,6 +17,7 @@ RUN apt-get -y update && apt-get -y install \
         libboost-filesystem-dev \
         libboost-iostreams-dev \
         libboost-thread-dev \
+        libboost-test-dev \
         libbinn-dev \
         librestclientcpp-dev \
         libjsoncpp-dev \

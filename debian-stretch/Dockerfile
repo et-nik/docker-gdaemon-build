@@ -25,4 +25,5 @@ RUN apt-get -y update && apt-get -y -t stretch-backports install \
         libboost-filesystem1.67-dev \
         libboost-iostreams1.67-dev \
         libboost-thread1.67-dev \
+        libboost-test1.67-dev \
     --no-install-recommends && rm -r /var/lib/apt/lists/*
