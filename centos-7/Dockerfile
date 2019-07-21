@@ -22,6 +22,19 @@ RUN git clone https://github.com/liteserver/binn \
     && cp libbinn.a /usr/lib/libbinn.a \
     && cp src/binn.h /usr/include/binn.h \
     && cd .. && rm -r binn
+    
+# OpenSSL
+RUN wget https://github.com/openssl/openssl/archive/OpenSSL_1_1_1a.tar.gz \
+    && tar -xvf OpenSSL_1_1_1a.tar.gz \
+    && cd openssl-OpenSSL_1_1_1a \
+    && ./config \
+    && make -j$(grep -c ^processor /proc/cpuinfo)\
+    && make install \
+#    && ln -s /usr/local/lib64/libssl.so.1.1 /usr/lib64/libssl.so.1.1 \
+#    && ln -s /usr/local/lib64/libcrypto.so.1.1 /usr/lib64/libcrypto.so.1.1 \
+#    && ln -s /usr/local/lib64/libssl.a /usr/lib64/libssl.a \
+#    && ln -s /usr/local/lib64/libcrypto.a /usr/lib64/libcrypto.a \
+    && cd .. && rm -r openssl-OpenSSL_1_1_1a && rm OpenSSL_1_1_1a.tar.gz
 
 # Compile Rest Client Library
 RUN git clone https://github.com/mrtazz/restclient-cpp \
