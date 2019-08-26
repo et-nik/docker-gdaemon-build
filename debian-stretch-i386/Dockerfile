@@ -1,4 +1,4 @@
-FROM buildpack-deps:stretch
+FROM i386/buildpack-deps:stretch
 
 RUN apt-get -y update && apt-get -y install \
         curl \
