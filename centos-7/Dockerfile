@@ -3,7 +3,7 @@ FROM tcnksm/centos-buildpack-deps:7
 # Download CMake
 RUN wget https://cmake.org/files/v3.10/cmake-3.10.3-Linux-x86_64.tar.gz \
     && tar -xvf cmake-3.10.3-Linux-x86_64.tar.gz \
-    && cp -R cmake-3.10.3-Linux-x86_64/* / \
+    && cp -R cmake-3.10.3-Linux-x86_64/* /usr \
     && rm -r cmake-3.10.3-Linux-x86_64 && rm cmake-3.10.3-Linux-x86_64.tar.gz
 
 # Compile Boost

@@ -1,8 +1,12 @@
 FROM i386/buildpack-deps:stretch
 
-RUN apt-get -y update && apt-get -y install \
+RUN apt-get -y update && apt-get -y install --reinstall \
         curl \
         gnupg2 \
+        libc6 \
+        libc6-dev-i386 \
+        gcc-multilib \
+        g++-multilib \
     --no-install-recommends && rm -r /var/lib/apt/lists/*
 
 # Download CMake
