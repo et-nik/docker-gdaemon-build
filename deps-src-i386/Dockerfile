@@ -1,11 +1,11 @@
-FROM i386/buildpack-deps:stretch
+FROM i386/buildpack-deps:buster
 
 RUN apt-get -y update && apt-get -y install --reinstall \
         curl \
         gnupg2 \
-        libc6 \
-        libc6-dev-i386 \
-        gcc-multilib \
+	libc6 \
+        libc6-dev \
+	gcc-multilib \
         g++-multilib \
     --no-install-recommends && rm -r /var/lib/apt/lists/*
 
@@ -33,26 +33,26 @@ RUN git clone https://github.com/liteserver/binn \
     && cd .. && rm -r binn
 
 # OpenSSL
-RUN wget https://github.com/openssl/openssl/archive/OpenSSL_1_1_1a.tar.gz \
-    && tar -xvf OpenSSL_1_1_1a.tar.gz \
-    && cd openssl-OpenSSL_1_1_1a \
-    && ./config \
+RUN wget https://github.com/openssl/openssl/archive/OpenSSL_1_1_1d.tar.gz \
+    && tar -xvf OpenSSL_1_1_1d.tar.gz \
+    && cd openssl-OpenSSL_1_1_1d \
+    && setarch i386 ./config -m32 \
     && make -j$(grep -c ^processor /proc/cpuinfo)\
     && make install \
 #    && ln -s /usr/local/lib64/libssl.so.1.1 /usr/lib64/libssl.so.1.1 \
 #    && ln -s /usr/local/lib64/libcrypto.so.1.1 /usr/lib64/libcrypto.so.1.1 \
 #    && ln -s /usr/local/lib64/libssl.a /usr/lib64/libssl.a \
 #    && ln -s /usr/local/lib64/libcrypto.a /usr/lib64/libcrypto.a \
-    && cd .. && rm -r openssl-OpenSSL_1_1_1a && rm OpenSSL_1_1_1a.tar.gz
+    && cd .. && rm -r openssl-OpenSSL_1_1_1d && rm OpenSSL_1_1_1d.tar.gz
 
 # Compile Curl Library
-RUN wget https://curl.haxx.se/download/curl-7.63.0.tar.gz  \
-    && tar -xvf curl-7.63.0.tar.gz  \
-    && cd curl-7.63.0  \
+RUN wget https://github.com/curl/curl/releases/download/curl-7_66_0/curl-7.66.0.tar.gz  \
+    && tar -xvf curl-7.66.0.tar.gz  \
+    && cd curl-7.66.0  \
     && ./configure --with-ssl --disable-shared \
     && make -j$(grep -c ^processor /proc/cpuinfo)\
     && make install \
-    && cd .. && rm -r curl-7.63.0 && rm curl-7.63.0.tar.gz
+    && cd .. && rm -r curl-7.66.0 && rm curl-7.66.0.tar.gz
 
 # Compile Rest Client Library
 RUN git clone https://github.com/mrtazz/restclient-cpp \
