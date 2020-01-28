@@ -9,7 +9,6 @@ RUN curl -fsSL http://packages.gameap.ru/gameap-rep.gpg.key | apt-key add - \
     && echo "deb http://packages.gameap.ru/debian jessie main" > /etc/apt/sources.list.d/gameap.list
 
 RUN apt-get -y update && apt-get -y install \
-        cmake \
         pkg-config \
         libbinn-dev \
         librestclientcpp-dev \
@@ -17,6 +16,13 @@ RUN apt-get -y update && apt-get -y install \
         libssl-dev \
         libcurl4-openssl-dev \
     --no-install-recommends && rm -r /var/lib/apt/lists/*
+
+# Download and compile CMake
+RUN wget https://github.com/Kitware/CMake/releases/download/v3.16.3/cmake-3.16.3.tar.gz \
+    && tar -xvf cmake-3.16.3.tar.gz \
+    && cd cmake-3.16.3 \
+    && ./configure \
+    && make -j$(grep -c ^processor /proc/cpuinfo) install
 
 RUN wget http://packages.gameap.ru/others/boost_1_70_0.tar.gz \
     && tar -xvf boost_1_70_0.tar.gz \
