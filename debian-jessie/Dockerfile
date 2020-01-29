@@ -22,7 +22,8 @@ RUN wget https://github.com/Kitware/CMake/releases/download/v3.16.3/cmake-3.16.3
     && tar -xvf cmake-3.16.3.tar.gz \
     && cd cmake-3.16.3 \
     && ./configure \
-    && make -j$(grep -c ^processor /proc/cpuinfo) install
+    && make -j$(grep -c ^processor /proc/cpuinfo) install \
+    && cd .. && rm -r cmake-3.16.3
 
 RUN wget http://packages.gameap.ru/others/boost_1_70_0.tar.gz \
     && tar -xvf boost_1_70_0.tar.gz \
