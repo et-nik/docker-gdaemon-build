@@ -1,5 +1,7 @@
 FROM buildpack-deps:focal
 
+ENV TZ=UTC
+
 RUN apt-get -y update && apt-get -y install \
         curl \
         gnupg2 \
