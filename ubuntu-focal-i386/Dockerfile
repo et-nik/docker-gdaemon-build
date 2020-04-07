@@ -7,8 +7,7 @@ RUN apt-get -y update && apt-get -y install \
     --no-install-recommends && rm -r /var/lib/apt/lists/*
 
 RUN curl -fsSL http://packages.gameap.ru/gameap-rep.gpg.key | apt-key add - \
-    && echo "deb http://packages.gameap.ru/ubuntu focal main" > /etc/apt/sources.list.d/gameap.list \
-    && add-apt-repository -y ppa:mhier/libboost-latest
+    && echo "deb http://packages.gameap.ru/ubuntu focal main" > /etc/apt/sources.list.d/gameap.list
 
 RUN apt-get -y update && apt-get -y install \
         cmake \
