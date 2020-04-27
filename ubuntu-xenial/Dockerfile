@@ -2,6 +2,7 @@ FROM ubuntu:xenial
 
 RUN apt-get -y update && apt-get -y install \
         curl \
+        wget \
         gnupg2 \
         software-properties-common \
     --no-install-recommends && rm -r /var/lib/apt/lists/*
