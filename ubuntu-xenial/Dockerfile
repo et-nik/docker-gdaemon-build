@@ -1,4 +1,4 @@
-FROM ubuntu:xenial
+FROM buildpack-deps:xenial
 
 RUN apt-get -y update && apt-get -y install \
         curl \
@@ -6,13 +6,10 @@ RUN apt-get -y update && apt-get -y install \
         software-properties-common \
     --no-install-recommends && rm -r /var/lib/apt/lists/*
 
-RUN add-apt-repository ppa:ubuntu-toolchain-r/test -y \
-    && curl -fsSL http://packages.gameap.ru/gameap-rep.gpg.key | apt-key add - \
+RUN curl -fsSL http://packages.gameap.ru/gameap-rep.gpg.key | apt-key add - \
     && echo "deb http://packages.gameap.ru/ubuntu xenial main" > /etc/apt/sources.list.d/gameap.list
 
 RUN apt-get -y update && apt-get -y install \
-        gcc-9 \
-        g++-9 \
         cmake \
         pkg-config \
         libbinn-dev \
