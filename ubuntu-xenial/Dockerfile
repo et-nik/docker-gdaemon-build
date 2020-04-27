@@ -5,8 +5,7 @@ RUN apt-get -y update && apt-get -y install \
         wget \
         gnupg2 \
         software-properties-common \
-    --no-install-recommends && rm -r /var/lib/apt/lists/* \
-    && update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 60 --slave /usr/bin/g++ g++ /usr/bin/g++-9
+    --no-install-recommends && rm -r /var/lib/apt/lists/*
 
 RUN add-apt-repository ppa:ubuntu-toolchain-r/test -y \
     && curl -fsSL http://packages.gameap.ru/gameap-rep.gpg.key | apt-key add - \
