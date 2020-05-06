@@ -17,10 +17,20 @@ RUN apt-get -y update && apt-get -y install \
         libcurl4-openssl-dev \
     --no-install-recommends && rm -r /var/lib/apt/lists/*
 
+RUN wget http://mirror.linux-ia64.org/gnu/gcc/releases/gcc-9.3.0/gcc-9.3.0.tar.gz \
+    && tar -xvf gcc-9.3.0.tar.gz \
+    && cd gcc-9.3.0 \
+    && ./contrib/download_prerequisites \
+    && mkdir objdir && cd objdir \
+    && $PWD/../configure --enable-multilib --disable-shared --with-newlib \
+    && make \
+    && make install \
+    && cd .. && rm -r gcc-9.3.0 && rm gcc-9.3.0.tar.gz
+
 RUN wget http://packages.gameap.ru/others/boost_1_70_0.tar.gz \
     && tar -xvf boost_1_70_0.tar.gz \
     && cd boost_1_70_0 \
-    && ./bootstrap.sh --with-libraries=chrono,exception,filesystem,iostreams,serialization,system,thread,test \
+    && ./bootstrap.sh --with-libraries=chrono,exception,filesystem,iostreams,system \
     && ./b2 install --link=static -j $(grep -c ^processor /proc/cpuinfo) \
     && cd .. && rm -r boost_1_70_0 && rm boost_1_70_0.tar.gz
     
