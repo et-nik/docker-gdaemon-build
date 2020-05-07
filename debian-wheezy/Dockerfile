@@ -26,7 +26,7 @@ RUN wget http://mirror.linux-ia64.org/gnu/gcc/releases/gcc-9.3.0/gcc-9.3.0.tar.g
     && make -j $(grep -c ^processor /proc/cpuinfo) \
     && make install \
     && update-alternatives --install /usr/bin/gcc gcc /opt/gcc-9.3.0/bin/gcc 60 --slave /usr/bin/g++ g++ /opt/gcc-9.3.0/bin/g++ \
-    && cd .. && rm -r gcc-9.3.0 && rm gcc-9.3.0.tar.gz
+    && cd ../.. && rm -r gcc-9.3.0 && rm gcc-9.3.0.tar.gz
 
 RUN wget http://packages.gameap.ru/others/boost_1_70_0.tar.gz \
     && tar -xvf boost_1_70_0.tar.gz \

@@ -28,7 +28,7 @@ RUN wget http://mirror.linux-ia64.org/gnu/gcc/releases/gcc-9.3.0/gcc-9.3.0.tar.g
     && make -j $(grep -c ^processor /proc/cpuinfo) \
     && make install \
     && update-alternatives --install /usr/bin/gcc gcc /opt/gcc-9.3.0/bin/gcc 60 --slave /usr/bin/g++ g++ /opt/gcc-9.3.0/bin/g++ \
-    && cd .. && rm -r gcc-9.3.0 && rm gcc-9.3.0.tar.gz
+    && cd ../.. && rm -r gcc-9.3.0 && rm gcc-9.3.0.tar.gz
 
 # Download and compile CMake
 RUN wget https://github.com/Kitware/CMake/releases/download/v3.16.3/cmake-3.16.3.tar.gz \
