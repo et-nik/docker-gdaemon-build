@@ -31,11 +31,15 @@ RUN wget http://mirror.linux-ia64.org/gnu/gcc/releases/gcc-9.3.0/gcc-9.3.0.tar.g
     && cd ../.. && rm -r gcc-9.3.0 && rm gcc-9.3.0.tar.gz
 
 # Download CMake
-RUN wget https://cmake.org/files/v3.17/cmake-3.17.2-Linux-x86_64.tar.gz \
+RUN cd /opt \
+    && wget https://cmake.org/files/v3.17/cmake-3.17.2-Linux-x86_64.tar.gz \
     && tar -xvf cmake-3.17.2-Linux-x86_64.tar.gz \
-    && cp -R cmake-3.17.2-Linux-x86_64/* \
     && rm cmake-3.17.2-Linux-x86_64.tar.gz \
-    && rm -rf rm cmake-3.17.2-Linux-x86_64
+    && update-alternatives --install /usr/bin/cmake cmake /opt/cmake-3.17.2-Linux-x86_64/bin/cmake 60 \
+        --slave /usr/bin/cmake-gui cmake-gui /opt/cmake-3.17.2-Linux-x86_64/bin/cmake-gui \
+        --slave /usr/bin/ccmake ccmake /opt/cmake-3.17.2-Linux-x86_64/bin/ccmake \
+        --slave /usr/bin/ctest ctest /opt/cmake-3.17.2-Linux-x86_64/bin/ctest \
+        --slave /usr/bin/cpack cpack /opt/cmake-3.17.2-Linux-x86_64/bin/cpack
 
 RUN wget http://packages.gameap.ru/others/boost_1_70_0.tar.gz \
     && tar -xvf boost_1_70_0.tar.gz \
