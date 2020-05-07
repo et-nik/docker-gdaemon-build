@@ -9,6 +9,8 @@ RUN curl -fsSL http://packages.gameap.ru/gameap-rep.gpg.key | apt-key add - \
     && echo "deb http://packages.gameap.ru/debian jessie main" > /etc/apt/sources.list.d/gameap.list
 
 RUN apt-get -y update && apt-get -y install \
+        gcc-multilib \
+        g++-multilib \
         pkg-config \
         libbinn-dev \
         librestclientcpp-dev \
@@ -16,15 +18,16 @@ RUN apt-get -y update && apt-get -y install \
         libssl-dev \
         libcurl4-openssl-dev \
     --no-install-recommends && rm -r /var/lib/apt/lists/*
-    
+
 RUN wget http://mirror.linux-ia64.org/gnu/gcc/releases/gcc-9.3.0/gcc-9.3.0.tar.gz \
     && tar -xvf gcc-9.3.0.tar.gz \
     && cd gcc-9.3.0 \
     && ./contrib/download_prerequisites \
     && mkdir objdir && cd objdir \
-    && $PWD/../configure --enable-multilib --disable-shared --with-newlib \
-    && make \
+    && $PWD/../configure --prefix=/opt/gcc-9.3.0 \
+    && make -j $(grep -c ^processor /proc/cpuinfo) \
     && make install \
+    && update-alternatives --install /usr/bin/gcc gcc /opt/gcc-9.3.0/bin/gcc 60 --slave /usr/bin/g++ g++ /opt/gcc-9.3.0/bin/g++ \
     && cd .. && rm -r gcc-9.3.0 && rm gcc-9.3.0.tar.gz
 
 # Download and compile CMake
