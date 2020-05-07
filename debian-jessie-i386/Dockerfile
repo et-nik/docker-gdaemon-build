@@ -31,12 +31,12 @@ RUN wget http://mirror.linux-ia64.org/gnu/gcc/releases/gcc-9.3.0/gcc-9.3.0.tar.g
     && cd ../.. && rm -r gcc-9.3.0 && rm gcc-9.3.0.tar.gz
 
 # Download and compile CMake
-RUN wget https://github.com/Kitware/CMake/releases/download/v3.16.3/cmake-3.16.3.tar.gz \
-    && tar -xvf cmake-3.16.3.tar.gz \
-    && cd cmake-3.16.3 \
+RUN wget https://cmake.org/files/v3.17/cmake-3.17.2.tar.gz \
+    && tar -xvf cmake-3.17.2.tar.gz \
+    && cd cmake-3.17.2 \
     && ./configure \
     && make -j$(grep -c ^processor /proc/cpuinfo) install \
-    && cd .. && rm -r cmake-3.16.3
+    && cd .. && rm -r cmake-3.17.2
 
 RUN wget http://packages.gameap.ru/others/boost_1_70_0.tar.gz \
     && tar -xvf boost_1_70_0.tar.gz \
