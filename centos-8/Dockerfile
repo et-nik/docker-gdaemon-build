@@ -1,9 +1,17 @@
-FROM buildpack-deps:stretch
+FROM knik/centos-buildpack-deps:8
 
-RUN apt-get -y update && apt-get -y install \
-        curl \
-        gnupg2 \
-    --no-install-recommends && rm -r /var/lib/apt/lists/*
+RUN yum -y install glibc-devel.i686 libgcc.i686 libstdc++-devel.i686 ncurses-devel.i686
+
+RUN wget http://mirror.linux-ia64.org/gnu/gcc/releases/gcc-9.3.0/gcc-9.3.0.tar.gz \
+    && tar -xvf gcc-9.3.0.tar.gz \
+    && cd gcc-9.3.0 \
+    && ./contrib/download_prerequisites \
+    && mkdir objdir && cd objdir \
+    && $PWD/../configure --prefix=/opt/gcc-9.3.0 \
+    && make -j $(grep -c ^processor /proc/cpuinfo) \
+    && make install \
+    && update-alternatives --install /usr/bin/gcc gcc /opt/gcc-9.3.0/bin/gcc 60 --slave /usr/bin/g++ g++ /opt/gcc-9.3.0/bin/g++ \
+    && cd ../.. && rm -r gcc-9.3.0 && rm gcc-9.3.0.tar.gz
 
 # Download CMake
 RUN cd /opt \
@@ -20,7 +28,7 @@ RUN cd /opt \
 RUN wget http://packages.gameap.ru/others/boost_1_67_0.tar.gz \
     && tar -xvf boost_1_67_0.tar.gz \
     && cd boost_1_67_0 \
-    && ./bootstrap.sh --with-libraries=chrono,exception,filesystem,iostreams,serialization,system,thread,test \
+    && ./bootstrap.sh --with-libraries=chrono,exception,filesystem,iostreams,system \
     && ./b2 install --link=static -j $(grep -c ^processor /proc/cpuinfo) \
     && cd .. && rm -r boost_1_67_0 && rm boost_1_67_0.tar.gz
 
@@ -33,46 +41,24 @@ RUN git clone https://github.com/liteserver/binn \
     && cp src/binn.h /usr/include/binn.h \
     && cd .. && rm -r binn
 
-# OpenSSL
-RUN wget https://github.com/openssl/openssl/archive/OpenSSL_1_1_1a.tar.gz \
-    && tar -xvf OpenSSL_1_1_1a.tar.gz \
-    && cd openssl-OpenSSL_1_1_1a \
-    && ./config \
-    && make -j$(grep -c ^processor /proc/cpuinfo)\
-    && make install \
-#    && ln -s /usr/local/lib64/libssl.so.1.1 /usr/lib64/libssl.so.1.1 \
-#    && ln -s /usr/local/lib64/libcrypto.so.1.1 /usr/lib64/libcrypto.so.1.1 \
-#    && ln -s /usr/local/lib64/libssl.a /usr/lib64/libssl.a \
-#    && ln -s /usr/local/lib64/libcrypto.a /usr/lib64/libcrypto.a \
-    && cd .. && rm -r openssl-OpenSSL_1_1_1a && rm OpenSSL_1_1_1a.tar.gz
-
-# Compile Curl Library
-RUN wget https://curl.haxx.se/download/curl-7.63.0.tar.gz  \
-    && tar -xvf curl-7.63.0.tar.gz  \
-    && cd curl-7.63.0  \
-    && ./configure --with-ssl --disable-shared \
-    && make -j$(grep -c ^processor /proc/cpuinfo)\
-    && make install \
-    && cd .. && rm -r curl-7.63.0 && rm curl-7.63.0.tar.gz
-
 # Compile Rest Client Library
 RUN git clone https://github.com/mrtazz/restclient-cpp \
     && cd restclient-cpp \
-    && git checkout tags/0.5.1 \
+    && git checkout tags/0.5.0 \
     && ./autogen.sh \
-    && ./configure \
-    && make -j$(grep -c ^processor /proc/cpuinfo)\
+    && ./configure --enable-static=yes --enable-shared=no \
+    && make -j $(grep -c ^processor /proc/cpuinfo) \
     && make install \
-    && cd .. && rm -r restclient-cpp
+    && cd .. && rm -rf restclient-cpp
 
 # Compile Json Cpp
 RUN git clone https://github.com/open-source-parsers/jsoncpp \
     && cd jsoncpp \
     && git checkout tags/1.8.4 \
-    && cmake . \
-    && make -j$(grep -c ^processor /proc/cpuinfo)\
+    && mkdir build && cd build \
+    && cmake -DJSONCPP_WITH_TESTS=OFF -DCMAKE_BUILD_TYPE=release -DBUILD_STATIC_LIBS=ON -DBUILD_SHARED_LIBS=OFF .. \
+    && cmake --build . \
     && make install \
     && mkdir /usr/local/include/jsoncpp \
     && mv /usr/local/include/json /usr/local/include/jsoncpp/json \
-#    && ln -s /usr/local/lib64/libjsoncpp.a /usr/lib64/libjsoncpp.a
-    && cd .. && rm -r jsoncpp
+    && cd ../.. && rm -rf jsoncpp
