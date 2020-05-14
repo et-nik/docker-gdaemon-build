@@ -10,6 +10,8 @@ RUN wget http://mirror.linux-ia64.org/gnu/gcc/releases/gcc-9.3.0/gcc-9.3.0.tar.g
     && $PWD/../configure --prefix=/opt/gcc-9.3.0 \
     && make -j $(grep -c ^processor /proc/cpuinfo) \
     && make install \
+    && mv /usr/bin/gcc /usr/bin/gcc-4.8 \
+    && mv /usr/bin/g++ /usr/bin/g++-4.8 \
     && update-alternatives --install /usr/bin/gcc gcc /opt/gcc-9.3.0/bin/gcc 60 --slave /usr/bin/g++ g++ /opt/gcc-9.3.0/bin/g++ \
     && cd ../.. && rm -r gcc-9.3.0 && rm gcc-9.3.0.tar.gz
 
