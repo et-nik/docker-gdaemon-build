@@ -12,7 +12,12 @@ RUN wget http://mirror.linux-ia64.org/gnu/gcc/releases/gcc-9.3.0/gcc-9.3.0.tar.g
     && make install \
     && mv /usr/bin/gcc /usr/bin/gcc-4.8 \
     && mv /usr/bin/g++ /usr/bin/g++-4.8 \
+    && mv /usr/bin/cc /usr/bin/cc-4.8 \
+    && mv /usr/bin/c++ /usr/bin/c++-4.8 \
+    && mv /usr/bin/gcov /usr/bin/gcov-4.8 \
     && update-alternatives --install /usr/bin/gcc gcc /opt/gcc-9.3.0/bin/gcc 60 --slave /usr/bin/g++ g++ /opt/gcc-9.3.0/bin/g++ \
+    && update-alternatives --install /usr/bin/cc cc /opt/gcc-9.3.0/bin/cc 60 --slave /usr/bin/c++ c++ /opt/gcc-9.3.0/bin/c++ \
+    && update-alternatives --install /usr/bin/gcov gcov /opt/gcc-9.3.0/bin/gcov 60 \
     && cd ../.. && rm -r gcc-9.3.0 && rm gcc-9.3.0.tar.gz
 
 # Download CMake
